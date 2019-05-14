@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: 'https://frontend-test.agendaedu.com/api/',
 });
 export default api;

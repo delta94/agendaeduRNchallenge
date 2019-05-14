@@ -9,8 +9,8 @@ export default {
   darker: '#333',
   black: '#000',
 
-  primary: '#6550B7',
-  primaryDark: Color('#6550B7').darken(0.1),
+  primary: '#733dbe',
+  primaryDark: Color('#733dbe').darken(0.1),
   secondary: '#6ADC00',
   success: '#9DCA83',
   danger: '#e37a7a',
