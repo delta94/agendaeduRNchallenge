@@ -1,13 +1,31 @@
-import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  createStackNavigator,
+  createDrawerNavigator,
+} from 'react-navigation';
 import Auth from './screens/Auth';
+
 import Events from './screens/Events';
+import EventDetail from './screens/EventDetail';
 
 const Routes = (token = '') => createAppContainer(
   createSwitchNavigator(
     {
       Auth,
-      Main: createStackNavigator({
-        Events,
+      Main: createDrawerNavigator({
+        EventStack: createStackNavigator({
+          Events: {
+            screen: Events,
+          },
+          EventDetail: {
+            screen: EventDetail,
+            navigationOptions: () => ({
+              title: 'Detalhes do evento',
+              headerBackTitle: null,
+            }),
+          },
+        }),
       }),
     },
     {

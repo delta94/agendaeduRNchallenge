@@ -1,10 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
 import React, { Component } from 'react';
+import {
+  Header, Left, Right, Icon,
+} from 'native-base';
 import { connect } from 'react-redux';
 import {
-  View, Text, TouchableOpacity, AsyncStorage,
+  SafeAreaView, View, Text, TouchableOpacity, AsyncStorage,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
@@ -13,16 +18,35 @@ import { Creators as AuthActions } from '../../store/ducks/auth';
 // import { Container } from './styles';
 
 class Events extends Component {
-  componentDidMount() {
-    const {
-      auth: {
-        data: { token },
-      },
-    } = this.props;
-    if (!token) {
-      this.sendTokenToStore();
-    }
-  }
+	static navigationOptions = {
+	  title: 'Eventos',
+	  headerBackTitle: null,
+	  headerLeftContainerStyle: {
+	    flex: 1,
+	    paddingLeft: 20,
+	    alignItems: 'center',
+	  },
+	  headerLeft: (
+  <Ionicons
+    name="ios-menu"
+    size={25}
+    onPress={() => {
+				  console.tron.log('abrindo');
+    }}
+  />
+	  ),
+	};
+
+	componentDidMount() {
+	  const {
+	    auth: {
+	      data: { token },
+	    },
+	  } = this.props;
+	  if (!token) {
+	    this.sendTokenToStore();
+	  }
+	}
 
 	sendTokenToStore = async () => {
 	  const { tokenGetSuccess } = this.props;
@@ -41,12 +65,20 @@ class Events extends Component {
 
 	render() {
 	  return (
-  <View>
+  <SafeAreaView>
     <Text>Events Screen</Text>
+    <TouchableOpacity
+      onPress={() => {
+					  console.tron.log(this.props);
+					  this.props.navigation.navigate('EventDetail');
+      }}
+    >
+      <Text>Card</Text>
+    </TouchableOpacity>
     <TouchableOpacity onPress={this.logout}>
       <Text>Logout</Text>
     </TouchableOpacity>
-  </View>
+  </SafeAreaView>
 	  );
 	}
 }
