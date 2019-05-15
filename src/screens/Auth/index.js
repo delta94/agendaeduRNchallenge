@@ -2,7 +2,7 @@
 /* eslint-disable no-tabs */
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as AuthActions } from '../../store/ducks/auth';
@@ -40,9 +40,9 @@ class Auth extends Component {
 	  const { signInRequest } = this.props;
 	  const { email, password } = this.state;
 	  const credentials = { email, password };
-	  const moked = { email: 'student@ae.com', password: '123456' };
+	  // const moked = { email: 'student@ae.com', password: '123456' };
 
-	  await signInRequest(moked);
+	  await signInRequest(credentials);
 	};
 
 	changeInput = (text, input) => {
@@ -50,7 +50,9 @@ class Auth extends Component {
 	};
 
 	renderError = () => {
-	  const { error } = this.props.auth;
+	  const {
+	    auth: { error },
+	  } = this.props;
 	  return (
   <ErrorView>
     <Error>{error}</Error>
@@ -62,7 +64,9 @@ class Auth extends Component {
 	  const {
 	    hidePassword, inputFocused, email, password,
 	  } = this.state;
-	  const { loading } = this.props.auth;
+	  const {
+	    auth: { loading },
+	  } = this.props;
 	  return (
   <Container>
     <Content>
@@ -106,6 +110,14 @@ class Auth extends Component {
 	  );
 	}
 }
+
+Auth.propTypes = {
+  signInRequest: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+  }).isRequired,
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,
