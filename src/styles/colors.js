@@ -11,6 +11,7 @@ export default {
 
   primary: '#733dbe',
   primaryDark: Color('#733dbe').darken(0.1),
+  primaryLight: 'rgba(115, 61, 190, 0.1)',
   secondary: '#6ADC00',
   success: '#9DCA83',
   danger: '#e37a7a',

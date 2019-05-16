@@ -49,12 +49,16 @@ export const Description = styled.Text.attrs({
 	padding-bottom: 8px;
 `;
 
-export const TimeContainer = styled.View``;
+export const TimeContainer = styled.View`
+	flex: 1;
+	flex-direction: row;
+`;
 
 export const TimerText = styled.Text`
 	font-size: 14;
 	color: ${colors.dark};
 	padding-bottom: 12px;
+	padding-left: 6px;
 `;
 
 export const Date = styled.Text`

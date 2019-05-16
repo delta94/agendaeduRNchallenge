@@ -1,8 +1,14 @@
+/* eslint-disable no-case-declarations */
 export const Types = {
   FETCH_REQUEST: 'events/FETCH_REQUEST',
   FETCH_SUCCESS: 'events/FETCH_SUCCESS',
   FETCH_FAILURE: 'events/FETCH_FAILURE',
 };
+
+const arrayToObject = array => array.reduce((obj, item) => {
+  obj[item.id] = item;
+  return obj;
+}, {});
 
 const INITIAL_STATE = {
   data: {},
@@ -15,9 +21,13 @@ export default function auth(state = INITIAL_STATE, action) {
     case Types.FETCH_REQUEST:
       return { ...state, loading: true };
     case Types.FETCH_SUCCESS:
+      const { data, metadata } = action.payload;
+
+      const eventsObj = arrayToObject(data);
+
       return {
         ...state,
-        data: { ...state.data, ...action.payload },
+        data: { ...state.data, ...{ eventsData: data, metadata, eventsObj } },
         loading: false,
         error: '',
       };

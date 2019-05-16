@@ -13,7 +13,13 @@ import { Creators as EventActions } from '../../store/ducks/events';
 import { Creators as AuthActions } from '../../store/ducks/auth';
 
 import {
-  Container, Content, TextStyled, ButtonStyled,
+  Container,
+  Content,
+  TextStyled,
+  ButtonStyled,
+  EventList,
+  NoEventsFound,
+  NoEventsText,
 } from './styles';
 
 import EventCard from '../../components/EventCard';
@@ -77,39 +83,58 @@ class Events extends Component {
 	  await AsyncStorage.clear();
 	};
 
-	render() {
-	  console.tron.log(this.props);
-	  const card1 = {
-	    title: 'EVENTOS',
-	    description: 'Aula especial de natação',
-	    image:
-				'https://s3-us-west-2.amazonaws.com/agendaedu-dev/schools/c5c1a933-cdef-4c9b-8a87-490f25c2538d/events/5380/attachments/1550866911-$1-original-poster-agendakids.jpeg',
-	  };
+	renderEventList = () => {
+	  const {
+	    data: { eventsData },
+	  } = this.props.events;
+	  return (
+  <EventList
+    data={eventsData}
+    keyExtractor={item => String(item.id)}
+    renderItem={({ item }) => this.renderEventCard(item)}
+  />
+	  );
+	};
 
-	  const card2 = {
-	    title: 'EVENTOS',
-	    description: 'Aula especial de natação da escola da santa cruz de jesus menino',
-	  };
+	renderEventCard = item => (
+  <DateContainer date="Quarta, 25 de janeiro">
+    <EventCard
+      data={item}
+      onPress={() => {
+				  this.onEventCardPress(item);
+      }}
+    />
+  </DateContainer>
+	);
+
+	onEventCardPress = (item) => {
+	  console.tron.log('pressing');
+	  console.tron.log(item);
+	  this.props.navigation.navigate('EventDetail', { itemId: item.id });
+	};
+
+	render() {
+	  const {
+	    data: { eventsData },
+	  } = this.props.events;
+
+	  console.tron.log('eventsData');
+	  console.tron.log(eventsData);
+	  console.tron.log(this.props);
 
 	  return (
   <Container>
+    <ButtonStyled onPress={this.fetchEvents}>
+      <TextStyled>FETCH</TextStyled>
+    </ButtonStyled>
     <Content>
-      <DateContainer date="Quarta, 25 de janeiro">
-        <EventCard data={card1} />
-        <EventCard data={card2} />
-      </DateContainer>
-      <DateContainer date="Terça, 24 de janeiro">
-        <EventCard data={card1} />
-        <EventCard data={card1} />
-      </DateContainer>
-      <ButtonStyled
-        onPress={() => {
-						  console.tron.log(this.props);
-						  this.props.navigation.navigate('EventDetail');
-        }}
-      >
-        <TextStyled>Card</TextStyled>
-      </ButtonStyled>
+      {eventsData && eventsData.length > 0 ? (
+					  this.renderEventList()
+      ) : (
+        <NoEventsFound>
+          <NoEventsText>Nenhum evento encontrado. </NoEventsText>
+        </NoEventsFound>
+      )}
       <ButtonStyled onPress={this.logout}>
         <TextStyled>Logout</TextStyled>
       </ButtonStyled>
@@ -127,7 +152,10 @@ Events.propTypes = {
   eventFetchRequest: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ auth: state.auth });
+const mapStateToProps = (state) => {
+  console.tron.log(state);
+  return { auth: state.auth, events: state.events };
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators({ ...EventActions, ...AuthActions }, dispatch);
 

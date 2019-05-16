@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TouchableWithoutFeedback } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import {
   Container,
@@ -14,13 +15,13 @@ import {
   Date,
 } from './styles';
 
-const EventCard = ({ data }) => {
+const EventCard = ({ data, onPress }) => {
   const {
-    title, description, image, location, id,
+    title, description, image, id, startAt,
   } = data;
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback key={id} onPress={onPress}>
       <Container>
         <Content>
           {image ? (
@@ -34,7 +35,8 @@ const EventCard = ({ data }) => {
             <Title>{title}</Title>
             <Description>{description}</Description>
             <TimeContainer>
-              <TimerText>16:00</TimerText>
+              <Ionicons name="md-time" size={20} />
+              <TimerText numberOfLines={1}>16:00</TimerText>
             </TimeContainer>
             <Date>Quarta, 25 de janeiro às 20:00h</Date>
           </EventInfo>
@@ -42,6 +44,15 @@ const EventCard = ({ data }) => {
       </Container>
     </TouchableWithoutFeedback>
   );
+};
+
+const timeRemaining = (date) => {
+  const today = new Date();
+  const eventDate = new Date(date);
+};
+
+const timeToText = (date) => {
+  const eventDate = new Date(date);
 };
 
 export default EventCard;
