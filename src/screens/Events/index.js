@@ -20,7 +20,7 @@ import EventCard from '../../components/EventCard';
 import DateContainer from '../../components/DateContainer';
 
 class Events extends Component {
-	static navigationOptions = {
+	static navigationOptions = ({ navigation }) => ({
 	  title: 'Eventos',
 	  headerBackTitle: null,
 	  headerLeftContainerStyle: {
@@ -33,11 +33,11 @@ class Events extends Component {
     name="ios-menu"
     size={25}
     onPress={() => {
-				  console.tron.log('abrindo');
+				  navigation.openDrawer();
     }}
   />
 	  ),
-	};
+	});
 
 	componentDidMount() {
 	  const {
