@@ -6,10 +6,15 @@ import './src/config/ReactotronConfig';
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import createNavigator from './src/routes';
 import store from './src/store';
 import NavigationService from './src/services/NavigationService';
+
+if (Platform.OS === 'android') {
+  SafeAreaView.setStatusBarHeight(0);
+}
 
 class App extends Component {
   constructor(props) {
