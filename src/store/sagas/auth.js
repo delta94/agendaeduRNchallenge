@@ -8,7 +8,7 @@ export function* signInRequest(action) {
   try {
     const response = yield call(api.post, '/login', action.payload.credentials);
     yield put(AuthActions.signInSuccess(response.data));
-    NavigationService.navigate('Events');
+    NavigationService.navigate('Main');
   } catch (err) {
     yield put(AuthActions.signInFailure(err.response.data.message));
   }

@@ -13,13 +13,7 @@ import { Creators as EventActions } from '../../store/ducks/events';
 import { Creators as AuthActions } from '../../store/ducks/auth';
 
 import {
-  Container,
-  Content,
-  TextStyled,
-  ButtonStyled,
-  EventList,
-  NoEventsFound,
-  NoEventsText,
+  Container, Content, Loading, EventList, NoEventsFound, NoEventsText,
 } from './styles';
 
 import EventCard from '../../components/EventCard';
@@ -55,6 +49,8 @@ class Events extends Component {
 	  if (!token) {
 	    this.sendTokenToStore();
 	  }
+
+	  this.fetchEvents();
 	}
 
 	fetchEvents = async () => {
@@ -83,6 +79,21 @@ class Events extends Component {
 	  await AsyncStorage.clear();
 	};
 
+	renderLoading = () => {
+	  const {
+	    events: { loading },
+	  } = this.props;
+
+	  if (loading) {
+	    return <Loading size="small" />;
+	  }
+	  return (
+  <NoEventsFound>
+    <NoEventsText>Nenhum evento encontrado. </NoEventsText>
+  </NoEventsFound>
+	  );
+	};
+
 	renderEventList = () => {
 	  const {
 	    data: { eventsData },
@@ -108,8 +119,6 @@ class Events extends Component {
 	);
 
 	onEventCardPress = (item) => {
-	  console.tron.log('pressing');
-	  console.tron.log(item);
 	  this.props.navigation.navigate('EventDetail', { itemId: item.id });
 	};
 
@@ -118,26 +127,10 @@ class Events extends Component {
 	    data: { eventsData },
 	  } = this.props.events;
 
-	  console.tron.log('eventsData');
-	  console.tron.log(eventsData);
-	  console.tron.log(this.props);
-
 	  return (
   <Container>
-    <ButtonStyled onPress={this.fetchEvents}>
-      <TextStyled>FETCH</TextStyled>
-    </ButtonStyled>
     <Content>
-      {eventsData && eventsData.length > 0 ? (
-					  this.renderEventList()
-      ) : (
-        <NoEventsFound>
-          <NoEventsText>Nenhum evento encontrado. </NoEventsText>
-        </NoEventsFound>
-      )}
-      <ButtonStyled onPress={this.logout}>
-        <TextStyled>Logout</TextStyled>
-      </ButtonStyled>
+      {eventsData && eventsData.length > 0 ? this.renderEventList() : this.renderLoading()}
     </Content>
   </Container>
 	  );

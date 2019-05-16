@@ -4,9 +4,9 @@ export const Container = styled.SafeAreaView``;
 
 export const Content = styled.ScrollView``;
 
-export const TextStyled = styled.Text``;
-
-export const ButtonStyled = styled.TouchableOpacity``;
+export const Loading = styled.ActivityIndicator`
+	padding-top: 20px;
+`;
 
 export const EventList = styled.FlatList``;
 
