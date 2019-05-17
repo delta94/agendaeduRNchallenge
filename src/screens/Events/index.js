@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-tabs */
 import React, { Component } from 'react';
@@ -7,14 +9,23 @@ import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import PropTypes from 'prop-types';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { Creators as EventActions } from '../../store/ducks/events';
 import { Creators as AuthActions } from '../../store/ducks/auth';
 
 import {
-  Container, Content, Loading, EventList, NoEventsFound, NoEventsText,
+  Container,
+  Content,
+  Loading,
+  EventList,
+  NoEventsFound,
+  NoEventsText,
+  FooterLoading,
+  EndOfList,
 } from './styles';
+
+import * as utils from '../../services/utils';
 
 import EventCard from '../../components/EventCard';
 import DateContainer from '../../components/DateContainer';
@@ -39,6 +50,11 @@ class Events extends Component {
 	  ),
 	});
 
+	constructor(props) {
+	  super(props);
+	  this.state = { nextPage: 1 };
+	}
+
 	componentDidMount() {
 	  const {
 	    auth: {
@@ -60,8 +76,11 @@ class Events extends Component {
 	      data: { token },
 	    },
 	  } = this.props;
-	  const pkct = { token, params: { limit: 5, page: 1 } };
+	  const { nextPage } = this.state;
+
+	  const pkct = { token, params: { limit: 5, page: nextPage } };
 	  await eventFetchRequest(pkct);
+	  this.setState({ nextPage: nextPage + 1 });
 	};
 
 	sendTokenToStore = async () => {
@@ -94,29 +113,47 @@ class Events extends Component {
 	  );
 	};
 
+	renderListFooter = () => {
+	  if (this.props.events.loading) {
+	    return <FooterLoading size="small" />;
+	  }
+	  return <EndOfList />;
+	};
+
 	renderEventList = () => {
 	  const {
-	    data: { eventsData },
+	    data: { eventsArray },
 	  } = this.props.events;
 	  return (
   <EventList
-    data={eventsData}
+    data={eventsArray}
+    extraData={eventsArray}
     keyExtractor={item => String(item.id)}
     renderItem={({ item }) => this.renderEventCard(item)}
+    onEndReached={this.fetchEvents}
+    onEndReachedThreshold={0.2}
+    ListFooterComponent={this.renderListFooter}
   />
 	  );
 	};
 
-	renderEventCard = item => (
-  <DateContainer date="Quarta, 25 de janeiro">
-    <EventCard
-      data={item}
-      onPress={() => {
-				  this.onEventCardPress(item);
-      }}
-    />
-  </DateContainer>
-	);
+	renderEventCard = (item) => {
+	  const date = new Date(item.sendAt);
+
+	  return (
+  <Content key={item.id}>
+    <DateContainer date={utils.getDataTitle(date)}>
+      <EventCard
+        data={item}
+        date={date}
+        onPress={() => {
+						  this.onEventCardPress(item);
+        }}
+      />
+    </DateContainer>
+  </Content>
+	  );
+	};
 
 	onEventCardPress = (item) => {
 	  this.props.navigation.navigate('EventDetail', { itemId: item.id });
@@ -124,14 +161,12 @@ class Events extends Component {
 
 	render() {
 	  const {
-	    data: { eventsData },
+	    data: { eventsArray },
 	  } = this.props.events;
 
 	  return (
   <Container>
-    <Content>
-      {eventsData && eventsData.length > 0 ? this.renderEventList() : this.renderLoading()}
-    </Content>
+    {eventsArray && eventsArray.length > 0 ? this.renderEventList() : this.renderLoading()}
   </Container>
 	  );
 	}

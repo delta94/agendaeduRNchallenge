@@ -11,7 +11,7 @@ const arrayToObject = array => array.reduce((obj, item) => {
 }, {});
 
 const INITIAL_STATE = {
-  data: {},
+  data: { eventsArray: [], eventsObj: {} },
   loading: false,
   error: null,
 };
@@ -27,7 +27,11 @@ export default function auth(state = INITIAL_STATE, action) {
 
       return {
         ...state,
-        data: { ...state.data, ...{ eventsData: data, metadata, eventsObj } },
+        data: {
+          eventsArray: [...state.data.eventsArray, ...data],
+          metadata,
+          eventsObj: { ...state.data.eventsObj, ...eventsObj },
+        },
         loading: false,
         error: '',
       };

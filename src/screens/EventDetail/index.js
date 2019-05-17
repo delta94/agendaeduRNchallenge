@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-
+import * as utils from '../../services/utils';
 import {
   Container,
   BackgroundImage,
@@ -18,17 +18,26 @@ import {
 } from './styles';
 
 class EventDetail extends Component {
-  componentDidMount() {}
-
-  render() {
-    console.tron.log('in detail');
-    console.tron.log(this.props);
+  componentWillMount() {
     const {
       navigation,
       events: {
         data: { eventsObj },
       },
     } = this.props;
+    const id = navigation.getParam('itemId', 'NO-ID');
+
+    this.setState({ date: new Date(eventsObj[id].startAt) });
+  }
+
+  render() {
+    const {
+      navigation,
+      events: {
+        data: { eventsObj },
+      },
+    } = this.props;
+    const { date } = this.state;
     const id = navigation.getParam('itemId', 'NO-ID');
     return (
       <Container>
@@ -41,14 +50,14 @@ class EventDetail extends Component {
         <Slider>
           <Header>
             <DateIcon>
-              <DateDay>25</DateDay>
-              <DateText>JAN</DateText>
+              <DateDay>{utils.getDay(date)}</DateDay>
+              <DateText>{utils.getMonthAbreviation(date)}</DateText>
             </DateIcon>
             <InfoContainer>
               <Title>{eventsObj[id].title}</Title>
               <TimeContainer>
                 <Ionicons name="md-time" size={20} />
-                <TimeText>16:00</TimeText>
+                <TimeText>{utils.getHour(date)}:00</TimeText>
               </TimeContainer>
             </InfoContainer>
           </Header>

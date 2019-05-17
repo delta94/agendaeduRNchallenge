@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { colors, metrics } from '../../styles';
 
 export const Container = styled.View`
-border-width: 1;
+ border-width: 1;
 	border-top-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};
 	border-bottom-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};
 	border-right-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};

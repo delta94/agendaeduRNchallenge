@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import { colors, metrics } from '../../styles';
 
 export const Container = styled.View`
-	flex: 1;
 	padding-top: ${metrics.basePadding};
 `;
 export const Date = styled.Text`
