@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import PropTypes from 'prop-types';
-import { AsyncStorage, Text } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { Creators as EventActions } from '../../store/ducks/events';
 import { Creators as AuthActions } from '../../store/ducks/auth';
@@ -89,9 +89,7 @@ class Events extends Component {
 	    const token = await AsyncStorage.getItem('@agendaedu:token');
 
 	    tokenGetSuccess(JSON.parse(token));
-	  } catch (err) {
-	    console.tron.log(err);
-	  }
+	  } catch (err) {}
 	};
 
 	logout = async () => {
@@ -165,7 +163,7 @@ class Events extends Component {
 	  } = this.props.events;
 
 	  return (
-  <Container contentContainerStyle={{flex: 1}}>
+  <Container contentContainerStyle={{ flex: 1 }}>
     {eventsArray && eventsArray.length > 0 ? this.renderEventList() : this.renderLoading()}
   </Container>
 	  );
@@ -180,10 +178,7 @@ Events.propTypes = {
   eventFetchRequest: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  console.tron.log(state);
-  return { auth: state.auth, events: state.events };
-};
+const mapStateToProps = state => ({ auth: state.auth, events: state.events });
 
 const mapDispatchToProps = dispatch => bindActionCreators({ ...EventActions, ...AuthActions }, dispatch);
 

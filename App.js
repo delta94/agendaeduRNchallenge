@@ -28,7 +28,6 @@ class App extends Component {
 
       this.setState({ userChecked: true, token });
     } catch (err) {
-      console.tron.log(err);
       this.setState({ userChecked: true });
     }
   }
