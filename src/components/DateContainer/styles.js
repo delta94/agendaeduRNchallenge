@@ -8,6 +8,7 @@ export const Container = styled.View`
 export const Date = styled.Text`
 	color: ${colors.regular};
 	font-size: 14;
+	font-weight: bold;
 	padding-left: ${metrics.basePadding};
 `;
 

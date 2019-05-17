@@ -1,20 +1,22 @@
 /* eslint-disable no-tabs */
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 import { colors, metrics } from '../../styles';
 
 export const Container = styled.View`
-	border-width: 1;
-	border-top-color: ${colors.light};
-	border-bottom-color: ${colors.light};
-	border-right-color: ${colors.light};
-	border-left-width: 4;
+border-width: 1;
+	border-top-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};
+	border-bottom-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};
+	border-right-color: ${Platform.OS === 'ios' ? 'transparent' : colors.light};
+	border-left-width: 5;
 	border-left-color: ${colors.primary};
 	border-radius: ${metrics.baseRadius}
 	margin-bottom: 8;
-	shadow-offset: 0px 2px;
+	shadow-offset: 0px 0px;
 	shadow-color: ${colors.black};
-	shadow-opacity: 0.3;
-	shadow-radius: 1;
+	shadow-opacity: 0.1;
+	shadow-radius: 4;
+	elevation: 1;
 `;
 
 export const Content = styled.View`
