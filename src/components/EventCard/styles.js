@@ -20,6 +20,7 @@ border-width: 1;
 `;
 
 export const Content = styled.View`
+	background: ${colors.white};
 	padding: 16px 16px 16px 0;
 	flex-direction: row;
 	align-items: center;
