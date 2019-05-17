@@ -165,7 +165,7 @@ class Events extends Component {
 	  } = this.props.events;
 
 	  return (
-  <Container>
+  <Container contentContainerStyle={{flex: 1}}>
     {eventsArray && eventsArray.length > 0 ? this.renderEventList() : this.renderLoading()}
   </Container>
 	  );
